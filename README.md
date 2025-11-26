@@ -1,94 +1,272 @@
-# Obsidian Sample Plugin
+# Audiobookshelf Sync Plugin
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+A plugin for Obsidian that syncs your Audiobookshelf library with your notes.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+- 🔄 **One-click sync** with your Audiobookshelf server
+- 📚 **Automatic note creation** for each book in your library
+- 📝 **Rich metadata** including author, narrator, genres, and more
+- 🗂️ **Organized by library** in separate folders
+- ⚙️ **Configurable settings** for server connection and output location
+- 🎯 **Duplicate detection** - won't create duplicate notes
 
-## First time developing plugins?
+## Setup
 
-Quick starting guide for new plugin devs:
+1. Install the plugin in Obsidian
+2. Go to Settings → Audiobookshelf Sync
+3. Configure your server settings:
+   - **Server URL**: Your Audiobookshelf server (e.g., `https://audiobookshelf.example.com`)
+   - **Username**: Your Audiobookshelf username
+   - **Password**: Your Audiobookshelf password
+   - **Output Folder**: Where to create book notes (default: `Books`)
+4. Click "Test Connection" to verify your settings
+5. Use the ribbon icon or command palette to sync your library
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+## Usage
 
-## Releasing new releases
+### Sync Your Library
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+The plugin offers multiple sync modes to protect your notes:
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+#### Sync Commands Available:
+- **"Sync Audiobookshelf Libraries"** - Uses your default sync mode
+- **"Sync Audiobookshelf (Create New Only)"** - Only creates notes for new books, never overwrites existing ones
+- **"Sync Audiobookshelf (Update Metadata Only)"** - Updates frontmatter/metadata but preserves all your content
+- **"Sync Audiobookshelf (Full Overwrite - DANGER)"** - Completely overwrites existing notes (use with caution!)
 
-## Adding your plugin to the community plugin list
+#### Setting Up Hotkeys:
+1. Go to **Settings → Hotkeys** in Obsidian
+2. Search for "Audiobookshelf"
+3. Click the **+** button next to any command to assign a hotkey
+4. **Suggested hotkeys:**
+   - Main Sync: `Ctrl+Shift+A` (or `Cmd+Shift+A` on Mac)
+   - Create New Only: `Ctrl+Shift+N`
+   - Update Metadata: `Ctrl+Shift+U`
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+#### Sync Modes Explained:
 
-## How to use
+**🟢 Create New Only (Recommended)**
+- Creates notes for new books only
+- Existing notes are completely untouched
+- Perfect for regular syncing without losing your notes
+- **Safe**: No risk of losing your content
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+**🟡 Update Metadata Only**
+- Updates book metadata (progress, status, etc.) in frontmatter
+- Preserves all your notes, quotes, and content
+- Keeps user-added fields like ratings and reviews
+- **Safe**: Your content is preserved, only metadata updates
 
-## Manually installing the plugin
+**🔴 Full Overwrite (DANGER)**
+- Completely replaces existing notes with fresh content
+- **ALL YOUR NOTES WILL BE LOST**
+- Only use if you want to start over or haven't added any notes yet
+- **Dangerous**: Use only when you're sure you want to lose existing content
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### Generated Notes
+Each book note includes:
+- **Title and Author** as heading
+- **Rich frontmatter** with metadata (genres, narrator, duration, etc.)
+- **Description** from Audiobookshelf
+- **Empty sections** for your notes and quotes
+- **Audiobookshelf ID** for tracking
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+### Example Note Structure
+```markdown
+---
+title: "The Great Gatsby"
+author: "F. Scott Fitzgerald"
+narrator: "Jake Gyllenhaal"
+genres:
+  - "Fiction"
+  - "Classic Literature"
+published: 1925
+duration: 4 hours
+audiobookshelf_id: "li_abc123"
+added_at: "2024-01-15"
+source: "Audiobookshelf"
+---
 
-## Funding URL
+# The Great Gatsby
 
-You can include funding URLs where people who use your plugin can financially support it.
+**Author:** F. Scott Fitzgerald
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+**Narrator:** Jake Gyllenhaal
+
+## Description
+
+The story of Jay Gatsby and his unrequited love...
+
+## Notes
+
+
+## Quotes
+```
+
+## Templates
+
+### Using Custom Templates
+
+You can create a custom template file and specify its path in the plugin settings. The template should be a markdown file with placeholders that will be replaced with book data.
+
+#### Template Variables
+
+The plugin supports the following variables in templates:
+
+**Basic Information:**
+- `{{title}}` - Book title
+- `{{author}}` - Author name
+- `{{narrator}}` - Narrator name (if available)
+- `{{description}}` - Book description
+
+**Metadata:**
+- `{{genres}}` - Array of genres (will be formatted as YAML list)
+- `{{tags}}` - Array of tags (will be formatted as YAML list)
+- `{{publisher}}` - Publisher name
+- `{{publishedYear}}` - Publication year
+- `{{language}}` - Book language
+
+**Technical Details:**
+- `{{duration}}` - Duration in hours (calculated)
+- `{{size}}` - File size in bytes
+- `{{addedAt}}` - Date added to Audiobookshelf (formatted per settings)
+- `{{audiobookshelfId}}` - Unique Audiobookshelf ID
+
+**Reading Progress & Status:**
+- `{{readingStatus}}` - Current status: `not-started`, `in-progress`, or `finished`
+- `{{progressPercentage}}` - Progress as percentage (0-100)
+- `{{currentTime}}` - Current listening position (e.g., "2h 30m")
+- `{{timeRemaining}}` - Time remaining to finish (e.g., "1h 15m")
+- `{{isFinished}}` - Boolean: `true` if finished, `false` otherwise
+- `{{lastListened}}` - Date last listened (formatted per settings)
+- `{{startedAt}}` - Date first started listening
+- `{{finishedAt}}` - Date finished (only if completed)
+
+#### Example Template
+
+Create a file like `Templates/Audiobook Template.md`:
+
+```markdown
+---
+title: "{{title}}"
+author: "{{author}}"
+narrator: "{{narrator}}"
+genres: {{genres}}
+tags: {{tags}}
+published: {{publishedYear}}
+publisher: "{{publisher}}"
+duration: {{duration}} hours
+audiobookshelf_id: "{{audiobookshelfId}}"
+added_at: "{{addedAt}}"
+reading_status: "{{readingStatus}}"
+progress: "{{progressPercentage}}%"
+last_listened: "{{lastListened}}"
+finished_at: "{{finishedAt}}"
+source: "Audiobookshelf"
+rating: 
+---
+
+# {{title}}
+
+> [!info] Book Info
+> **Author:** {{author}}
+> **Narrator:** {{narrator}}
+> **Duration:** {{duration}} hours
+> **Published:** {{publishedYear}}
+> **Status:** {{readingStatus}} ({{progressPercentage}}% complete)
+> **Current Position:** {{currentTime}} / {{duration}}h
+> **Time Remaining:** {{timeRemaining}}
+
+> [!progress] Reading Progress
+> **Started:** {{startedAt}}
+> **Last Listened:** {{lastListened}}
+> **Finished:** {{finishedAt}}
+> 
+> Progress: {{progressPercentage}}% complete
+> 
+> ```
+> ████████████████████████████████████████ {{progressPercentage}}%
+> ```
+
+## Summary
+
+{{description}}
+
+## My Notes
+
+### Key Takeaways
+- 
+
+### Favorite Quotes
+> 
+
+## Review
+
+**Rating:** ⭐⭐⭐⭐⭐
+**Recommendation:** 
+```
+
+Then set the template path in plugin settings: `Templates/Audiobook Template.md`
+
+### Available Fields Reference
+
+For a complete list of available fields from the Audiobookshelf API, see:
+- [Audiobookshelf API Documentation](https://api.audiobookshelf.org/)
+- [Library Item Schema](https://api.audiobookshelf.org/#library-item)
+- [Book Metadata Schema](https://api.audiobookshelf.org/#book-metadata)
+
+The plugin extracts and processes the following data structure from each library item:
 
 ```json
 {
-    "fundingUrl": "https://buymeacoffee.com"
+  "id": "library_item_id",
+  "media": {
+    "metadata": {
+      "title": "Book Title",
+      "authorName": "Author Name",
+      "narratorName": "Narrator Name",
+      "description": "Book description...",
+      "genres": ["Genre1", "Genre2"],
+      "publishedYear": "2023",
+      "publisher": "Publisher Name",
+      "language": "en"
+    },
+    "duration": 28800,
+    "tags": ["tag1", "tag2"]
+  },
+  "addedAt": 1640995200000,
+  "size": 157286400
 }
 ```
 
-If you have multiple URLs, you can also do:
+## Development
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+```bash
+# Install dependencies
+pnpm install
+
+# Start development mode (watch for changes)
+pnpm run dev
+
+# Build for production
+pnpm run build
+
+# Clean build artifacts
+pnpm run clean
 ```
 
-## API Documentation
+### Build Output
 
-See https://github.com/obsidianmd/obsidian-api
+The build process creates a `dist/` folder containing:
+- `main.js` - The compiled plugin code
+- `manifest.json` - Plugin metadata
+
+To install the plugin:
+1. Copy the entire `dist/` folder to your vault's `.obsidian/plugins/audiobookshelf-sync/` directory
+2. Rename the `dist/` folder to `audiobookshelf-sync/`
+3. Enable the plugin in Obsidian settings
+
+## License
+
+MIT

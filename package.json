@@ -1,23 +1,33 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-audiobookshelf-sync",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "Sync your Audiobookshelf library with Obsidian notes",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production && pnpm run copy-manifest",
+		"copy-manifest": "mkdir -p dist && cp manifest.json dist/",
+		"clean": "rm -rf dist",
+		"release": "pnpm run build && cd dist && zip -r ../audiobookshelf-sync-plugin.zip .",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
-	"keywords": [],
-	"author": "",
+	"keywords": [
+		"obsidian",
+		"plugin",
+		"audiobookshelf",
+		"books",
+		"audiobooks"
+	],
+	"author": "Christian Kopac <hello@christiankopac.com>",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/node": "^16.11.6",
+		"@types/node": "^16.18.126",
 		"@typescript-eslint/eslint-plugin": "5.29.0",
 		"@typescript-eslint/parser": "5.29.0",
 		"builtin-modules": "3.3.0",
 		"esbuild": "0.17.3",
 		"obsidian": "latest",
+		"obsidian-typings": "^4.49.0",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
 	}
