@@ -1,6 +1,6 @@
 # Audiobookshelf Sync Plugin
 
-A plugin for Obsidian that syncs your Audiobookshelf library with your notes.
+A plugin that syncs your Audiobookshelf library with your notes.
 
 ## Features
 
@@ -13,7 +13,7 @@ A plugin for Obsidian that syncs your Audiobookshelf library with your notes.
 
 ## Setup
 
-1. Install the plugin in Obsidian
+1. Install the plugin
 2. Go to Settings → Audiobookshelf Sync
 3. Configure your server settings:
    - **Server URL**: Your Audiobookshelf server (e.g., `https://audiobookshelf.example.com`)
@@ -36,7 +36,7 @@ The plugin offers multiple sync modes to protect your notes:
 - **"Sync Audiobookshelf (Full Overwrite - DANGER)"** - Completely overwrites existing notes (use with caution!)
 
 #### Setting Up Hotkeys:
-1. Go to **Settings → Hotkeys** in Obsidian
+1. Go to **Settings → Hotkeys**
 2. Search for "Audiobookshelf"
 3. Click the **+** button next to any command to assign a hotkey
 4. **Suggested hotkeys:**
