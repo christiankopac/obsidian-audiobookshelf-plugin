@@ -3,7 +3,7 @@
 	"name": "Audiobookshelf Sync",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Sync your Audiobookshelf library with Obsidian notes",
+	"description": "Sync your Audiobookshelf library with your notes.",
 	"author": "Christian Kopac",
 	"authorUrl": "https://christiankopac.com",
 	"fundingUrl": "",
